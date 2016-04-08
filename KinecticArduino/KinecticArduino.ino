@@ -66,6 +66,21 @@ void writePins(){
   digitalWrite(bellPin,bellPinState);
 }
 
+void Alert(int times){
+  int ringsPerTime = 3;
+  for(int t = 0; t < times; t++){
+    for(int r = 0; r < ringsPerTime; r++){
+      digitalWrite(bellPin,RELAYON);
+      delay(100);
+      digitalWrite(bellPin,RELAYOFF);
+      delay(250);
+    }
+    if(times > 0){
+      delay(250);
+    }
+  }
+}
+
 void loop() {
   //if there is serial data in the buffer read a byte
   if(Serial.available() > 0){
@@ -75,20 +90,24 @@ void loop() {
     switch(inByte)
     {
       case 'l':
-        lightPinState = RELAYOFF;
         Serial.println('l');
+        lightPinState = RELAYOFF;
         break;
       case 'L':
-        lightPinState = RELAYON;
         Serial.println('L');
+        lightPinState = RELAYON;
         break;
       case 'b':
-        bellPinState = RELAYOFF;
         Serial.println('b');
+        bellPinState = RELAYOFF;
         break;
       case 'B':
-        bellPinState = RELAYON;
         Serial.println('B');
+        bellPinState = RELAYON;
+        break;
+      case 'A':
+        Serial.println('A');
+        Alert(3);
         break;
     }
     writePins();
